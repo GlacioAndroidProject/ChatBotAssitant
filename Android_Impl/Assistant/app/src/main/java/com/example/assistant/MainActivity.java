@@ -6,7 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.alan.alansdk.AlanConfig;
+import com.alan.alansdk.button.AlanButton;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -29,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
         dbpath = ctx.getDatabasePath(dbname);
         ChatBot.DATABASE = dbpath.getAbsolutePath();
         init();
+
+        ImageView imageButton;
+        AlanButton alanButton = (AlanButton)findViewById(R.id.alan_button);
+
+        AlanConfig alanConfig = AlanConfig.builder()
+                .setProjectId("314203787ccd9370974f1bf6b6929c1b2e956eca572e1d8b807a3e2338fdd0dc/prod")
+                .build();
+        alanButton.initWithConfig(alanConfig);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O_MR1)

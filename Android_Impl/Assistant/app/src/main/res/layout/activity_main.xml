@@ -6,14 +6,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
-    <co.intentservice.chatui.ChatView
-        android:id="@+id/chat_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
+<!--        <ImageView-->
+<!--            android:id="@+id/alan_button1"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_gravity="right|bottom"-->
+<!--            android:layout_marginRight="70dp"-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            android:src="@drawable/voice"-->
+<!--            android:elevation="8dp"-->
+<!--            >-->
+<!--        </ImageView>-->
+        <com.alan.alansdk.button.AlanButton
+            android:id="@+id/alan_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
 
-        chatview:bubbleBackgroundRcv="@color/sinch_purple"
+            android:background="@drawable/voice"
+            android:layout_gravity="right|bottom"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:elevation="10dp"
+            >
+        </com.alan.alansdk.button.AlanButton>
+<!--    </FrameLayout>-->
+<!--        <FrameLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
 
-        chatview:bubbleElevation="elevated"/>
-
+            <co.intentservice.chatui.ChatView
+                android:id="@+id/chat_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="0dp"
+                app:inputHint=" Nhập tại đây..."
+                android:layout_marginRight="80dp"
+                android:layout_marginLeft="5dp"
+                chatview:bubbleBackgroundRcv="@color/sinch_purple"
+                chatview:bubbleElevation="elevated" />
+</FrameLayout>
 </RelativeLayout>
