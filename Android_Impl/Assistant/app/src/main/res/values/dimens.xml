@@ -1,0 +1,24 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <!--Dimensions for car list-->
+    <dimen name="location">14sp</dimen>
+    <dimen name="hint_input">12dp</dimen>
+    <dimen name="top_nav_headers">16sp</dimen>
+    <dimen name="top_nav_height">40dp</dimen>
+    <dimen name="page_one_text_size">12sp</dimen>
+    <dimen name="number_picker_width">45dp</dimen>
+    <dimen name="date_time_title_playbacks">13sp</dimen>
+    <dimen name="carlist_icon_dimen">17dp</dimen>
+    <dimen name="carlist_padding_dimen">7dp</dimen>
+    <dimen name="text_size">12dp</dimen>
+    <dimen name="title_size">15dp</dimen>
+    <dimen name="size_text">14dp</dimen>
+    <dimen name="header_size">17dp</dimen>
+    <dimen name="size_12sp">12sp</dimen>
+    <dimen name="button_height">40dp</dimen>
+    <dimen name="button_width">130dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+</resources>

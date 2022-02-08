@@ -3,4 +3,9 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="calendar_background">#fafafa</color>
+    <color name="colorPrimaryFinal">#2F86F1</color>
+    <color name="loadFinal">#ccc</color>
+    <color name="colorWhiteFinal">#ffffff</color>
+
 </resources>

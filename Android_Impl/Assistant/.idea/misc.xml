@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/AndroidJavaProject/Hospital_Appointy_Android/Example/Android-Assistant-ChatBot/Android_Impl/Assistant/app/src/main/res/drawable/bg_dialog.xml" value="0.348" />
+        <entry key="..\:/Projects/AndroidJavaProject/Hospital_Appointy_Android/Example/Android-Assistant-ChatBot/Android_Impl/Assistant/app/src/main/res/drawable/ic_launcher_background.xml" value="0.348" />
+        <entry key="..\:/Projects/AndroidJavaProject/Hospital_Appointy_Android/Example/Android-Assistant-ChatBot/Android_Impl/Assistant/app/src/main/res/drawable/rounded_custom_button.xml" value="0.348" />
         <entry key="..\:/Projects/AndroidJavaProject/Hospital_Appointy_Android/Example/Android-Assistant-ChatBot/Android_Impl/Assistant/app/src/main/res/layout/activity_main.xml" value="0.3625" />
+        <entry key="..\:/Projects/AndroidJavaProject/Hospital_Appointy_Android/Example/Android-Assistant-ChatBot/Android_Impl/Assistant/app/src/main/res/layout/chatbot_menu.xml" value="0.3484375" />
+        <entry key="..\:/Projects/AndroidJavaProject/Hospital_Appointy_Android/Example/Android-Assistant-ChatBot/Android_Impl/Assistant/app/src/main/res/layout/snapshot_folder_setting.xml" value="0.3625" />
+        <entry key="..\:/Projects/AndroidJavaProject/Hospital_Appointy_Android/Example/Android-Assistant-ChatBot/Android_Impl/Assistant/app/src/main/res/menu/chatbot_menu.xml" value="0.3625" />
       </map>
     </option>
   </component>
