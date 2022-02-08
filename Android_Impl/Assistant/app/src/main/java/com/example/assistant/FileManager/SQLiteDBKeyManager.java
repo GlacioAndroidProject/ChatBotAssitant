@@ -19,7 +19,7 @@ public class SQLiteDBKeyManager extends SQLiteOpenHelper {
 
     public static SQLiteDBKeyManager GetInstance(){
         if (single_instance == null)
-            single_instance = new SQLiteDBKeyManager(null,null,null, GetInstance().DB_Version);
+            single_instance = new SQLiteDBKeyManager(null,null,null, 1);
 
         return single_instance;
     }
@@ -29,7 +29,7 @@ public class SQLiteDBKeyManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("Create Table " + tableName + "(" + id + " INTEGER PRIMARY KEY, " + key + " Text, " + value + " Text);");
+        db.execSQL("Create Table " + tableName + "(" + id + " Text PRIMARY KEY, " + key + " Text, " + value + " Text);");
     }
 
     @Override

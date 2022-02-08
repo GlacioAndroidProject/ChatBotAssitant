@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     ChatView chatView;
     ChatBot chatBot;
     File dbpath;
+    EditText newFolder;
     @RequiresApi(api = Build.VERSION_CODES.O_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         dbpath = ctx.getDatabasePath(dbname);
         ChatBot.DATABASE = dbpath.getAbsolutePath();
         init();
-
         ImageView imageButton;
         AlanButton alanButton = (AlanButton)findViewById(R.id.alan_button);
 
@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
             case ContantsDefine.REQUEST_GET_NEW_SNAPSHORT_FOLDER:
                 if (resultCode == RESULT_OK) {
                     String FilePath = data.getData().getPath();
+                    String path = FilePath;
+                    newFolder.setText(FilePath);
                     //FilePath is your file as a string
                 }
         }
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView OpenSettingFolder = (ImageView) dialog.findViewById(R.id.OpenSettingFolder);
 
 
-        EditText newFolder = dialog.findViewById(R.id.newFolderConfirm);
+        newFolder = dialog.findViewById(R.id.newFolderConfirm);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
