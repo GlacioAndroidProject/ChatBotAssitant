@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String newFolderValue = newFolder.getText().toString();
                 DBKeyObject dbKeyObject = new DBKeyObject(ContantsDefine.EXCEL_FOLDER_PATH,ContantsDefine.EXCEL_FOLDER_PATH, newFolderValue );
-                SQLiteDBKeyManager.GetInstance().updateKey(dbKeyObject);
+                SQLiteDBKeyManager.GetInstance(context).addKey(dbKeyObject);
                 dialog.dismiss();
             }
         });
