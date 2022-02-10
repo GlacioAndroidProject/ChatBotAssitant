@@ -27,10 +27,13 @@ import com.alan.alansdk.AlanConfig;
 import com.alan.alansdk.button.AlanButton;
 import com.example.assistant.FileManager.DBKeyObject;
 import com.example.assistant.FileManager.Functions;
+import com.example.assistant.FileManager.QuestionAnswerObject;
+import com.example.assistant.FileManager.ReadExcelFile;
 import com.example.assistant.FileManager.SQLiteDBKeyManager;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 import co.intentservice.chatui.ChatView;
 import co.intentservice.chatui.models.ChatMessage;
@@ -71,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.importFile:
                 OpenSettingFolderPath(this);
+                return true;
+            case R.id.deleteDataBase:
                 return true;
             case R.id.help:
                 return true;
@@ -166,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 String newFolderValue = newFolder.getText().toString();
                 DBKeyObject dbKeyObject = new DBKeyObject(ContantsDefine.EXCEL_FOLDER_PATH,ContantsDefine.EXCEL_FOLDER_PATH, newFolderValue );
                 SQLiteDBKeyManager.GetInstance(context).addKey(dbKeyObject);
+                ReadDataFromExcelFile(context);
                 dialog.dismiss();
             }
         });
@@ -183,5 +189,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+    private void ReadDataFromExcelFile(Activity context){
+        String excelFilePath = SQLiteDBKeyManager.GetInstance(context).GetValueByKey(ContantsDefine.EXCEL_FOLDER_PATH);
+        ArrayList<QuestionAnswerObject> datasFromExcelFile = ReadExcelFile.ReadExcelFile(context, excelFilePath);
     }
 }

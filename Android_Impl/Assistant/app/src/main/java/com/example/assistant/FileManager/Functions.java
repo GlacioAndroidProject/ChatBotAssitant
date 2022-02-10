@@ -1,8 +1,5 @@
 package com.example.assistant.FileManager;
 
-import static com.example.assistant.ContantsDefine.REQUEST_GET_NEW_SNAPSHORT_FOLDER;
-import static com.example.assistant.FileManager.ReadExcelFile.GetDefaultSnapshotFolderPath;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
@@ -30,40 +27,48 @@ import com.example.assistant.ContantsDefine;
 import com.example.assistant.R;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Functions {
     public static final int WRITE_EXTENAL_STORAGE = 121;
     int REQUEST_GET_NEW_SNAPSHORT_FOLDER = 100;
-
+    public static String[] permissions = new String[]{
+//            Manifest.permission.INTERNET,
+//            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+//            Manifest.permission.VIBRATE,
+//            Manifest.permission.RECORD_AUDIO,
+    };
     public static boolean checkPermission(Activity mContext){
-        int result = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if(result == PackageManager.PERMISSION_GRANTED)
-            return true;
-        else return false;
+
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String p : permissions) {
+            result = ContextCompat.checkSelfPermission(mContext, p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(mContext, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), Functions.WRITE_EXTENAL_STORAGE);
+            return false;
+        }
+        return true;
     }
     public static void requestPermission(Activity context){
         if(ActivityCompat.shouldShowRequestPermissionRationale(
                 context, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             Toast.makeText(context, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
         }else{
-            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Functions.WRITE_EXTENAL_STORAGE);
+            ActivityCompat.requestPermissions(context, permissions, Functions.WRITE_EXTENAL_STORAGE);
         }
     }
 
     public static void ScanFolder(Activity context) {
 
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, GetDefaultSnapshotFolderPath(context));
-//        context.startActivityForResult(intent, ContantsDefine.REQUEST_GET_NEW_SNAPSHORT_FOLDER);
-
-//        Intent fileintent = new Intent(Intent.ACTION_GET_CONTENT);
-//        fileintent.setType("xlsx");
-//        try {
-//            context.startActivityForResult(fileintent, ContantsDefine.REQUEST_GET_NEW_SNAPSHORT_FOLDER);
-//        } catch (ActivityNotFoundException e) {
-//
-//        }
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 
         // Filter to only show results that can be "opened", such as a

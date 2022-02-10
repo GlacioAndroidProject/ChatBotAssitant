@@ -2,6 +2,7 @@ package com.example.assistant.FileManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 
 import jxl.Cell;
@@ -11,54 +12,51 @@ import jxl.Workbook;
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 
 public class ReadExcelFile {
-    public static ArrayList<String> ReadExcelFile(String excelFilePath){
-        ArrayList<String>datas = new ArrayList<>();
+    public static ArrayList<QuestionAnswerObject> ReadExcelFile(Activity context, String excelFilePath){
+        ArrayList<QuestionAnswerObject>datas = new ArrayList<>();
         try
         {
             //FileInputStream am= new FileInputStream(excelFilePath);
-            InputStream excelData=new FileInputStream(excelFilePath);
+            if(!Functions.checkPermission(context)){
+                //Functions.requestPermission(context);
+            }
+            Uri uri = Uri.parse(excelFilePath);
+            File excelFile = new File(uri.getPath());
+            InputStream excelData= new FileInputStream(uri.getPath());
             Workbook wb=Workbook.getWorkbook(excelData);
             Sheet s=wb.getSheet(0);
             int row=s.getRows();
-            int col=s.getColumns();
+            int col=1;  // 2 column
+
 
             String xx="";
             for (int i=0;i<row;i++)
             {
 
+                String question = "";
+                String answer = "";
                 for(int c=0;i<col;c++)
                 {
                     Cell z=s.getCell(c,i);
-                    datas.add(z.getContents());
-                    xx=xx+z.getContents();
-
+                    if(c==0)
+                        question = z.getContents();
+                    else if (c==1)
+                    {
+                        answer = z.getContents();
+                    }
                 }
-
-                xx=xx+"\n";
+                datas.add(new QuestionAnswerObject(question, answer));
             }
         }
 
-        catch (Exception e){}
-        return  datas;
-    }
-    public static String GetDefaultSnapshotFolderPath(Activity mContext){
-        if(!Functions.checkPermission(mContext)){
-            Functions.requestPermission(mContext);
+        catch (Exception e){
+            System.out.println(e.toString());
         }
-        String folderPath ;
-        ApplicationInfo applicationInfo = mContext.getApplicationInfo();
-        int appNameID = applicationInfo.labelRes;
-        String AppName = appNameID == 0 ? applicationInfo.nonLocalizedLabel.toString() : mContext.getString(appNameID);
-
-        if(Build.VERSION.SDK_INT< Build.VERSION_CODES.R){
-            folderPath = Environment.getExternalStorageDirectory() +"/"+ Environment.DIRECTORY_PICTURES+ "/"+ AppName+"/";
-        } else
-            folderPath =mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-
-        return  folderPath;
+        return  datas;
     }
 }
