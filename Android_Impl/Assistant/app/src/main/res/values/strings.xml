@@ -3,5 +3,6 @@
     <string name="import_file">Import excel file</string>
     <string name="help">Trợ giúp và phản hồi</string>
     <string name="deleteDB">Xóa dữ liệu tranning</string>
+    <string name="openFileError">Không thể mở file</string>
 
 </resources>

@@ -77,15 +77,20 @@ public class SQLiteDBKeyManager {
     }
 
     public void addKey(DBKeyObject dbKeyObject){
+        //String rowExits = GetValueByKey(dbKeyObject.getKey());
+//        if(!rowExits.isEmpty())
+//        {
+//            updateKey(dbKeyObject);
+//            return;
+//        }
         openForWirteDB();
         ContentValues cv=new ContentValues();
         //cv.put(bBKeyId,dbKeyObject.getId());
         cv.put(bBKeyKey,dbKeyObject.getKey());
         cv.put(bBKeyValue,dbKeyObject.getValue());
+        this.database.replace(bBKeyTableName, null, cv);
 
-        this.database.insert(bBKeyTableName, null, cv);
         close();
-        String result = GetValueByKey(dbKeyObject.getKey());
     }
 
     @SuppressLint("Range")
@@ -149,7 +154,7 @@ public class SQLiteDBKeyManager {
             cv.put(bBKeyKey,dbKeyObject.getKey());
             cv.put(bBKeyValue,dbKeyObject.getValue());
         }
-        this.database.insert(bBKeyTableName, null, cv);
+        this.database.replace(bBKeyTableName, null, cv);
         close();
     }
 

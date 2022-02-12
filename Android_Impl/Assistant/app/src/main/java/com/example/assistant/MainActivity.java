@@ -19,20 +19,19 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.alan.alansdk.AlanConfig;
 import com.alan.alansdk.button.AlanButton;
+import com.example.assistant.FileManager.DBDataAIObject;
 import com.example.assistant.FileManager.DBKeyObject;
 import com.example.assistant.FileManager.Functions;
 import com.example.assistant.FileManager.QuestionAnswerObject;
 import com.example.assistant.FileManager.ReadExcelFile;
+import com.example.assistant.FileManager.SQLiteDBDataAIManager;
 import com.example.assistant.FileManager.SQLiteDBKeyManager;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 import co.intentservice.chatui.ChatView;
@@ -49,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         chatView = (ChatView) findViewById(R.id.chat_view);
-        Context ctx = this;// for Activity, or Service. Otherwise simply get the context.
-        String dbname = ChatBot.DATABASE_NAME;
-        dbpath = ctx.getDatabasePath(dbname);
-        ChatBot.DATABASE = dbpath.getAbsolutePath();
+        //Context ctx = this;// for Activity, or Service. Otherwise simply get the context.
+        //String dbname = ContantsDefine.DATABASE_NAME;
+        //dbpath = ctx.getDatabasePath(dbname);
+        //ChatBot.DATABASE = dbpath.getAbsolutePath();
         init();
         ImageView imageButton;
         AlanButton alanButton = (AlanButton)findViewById(R.id.alan_button);
@@ -89,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
         if (data == null)
             return;
         switch (requestCode) {
-            case ContantsDefine.REQUEST_GET_NEW_SNAPSHORT_FOLDER:
+            case ContantsDefine.REQUEST_GET_EXCEL_FILE_PATH:
                 if (resultCode == RESULT_OK) {
-                    String FilePath = data.getData().getPath();
+                    String FilePath = data.getData().toString();
                     String path = FilePath;
                     newFolder.setText(FilePath);
                     //FilePath is your file as a string
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         chatView = (ChatView) findViewById(R.id.chat_view);
         try{
-            chatBot = new ChatBot();
+            chatBot = new ChatBot(this.getApplicationContext());
             chatView.addMessage(new ChatMessage(ChatBot.getBotIntro(), System.currentTimeMillis(), ChatMessage.Type.RECEIVED));
             addListeners();
         }catch (Exception e){
@@ -146,9 +145,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         try {
             chatBot.checkExit("exit");
-            if(KnowledgeBase.mydatabase != null) {
-                KnowledgeBase.mydatabase.close();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -165,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         newFolder = dialog.findViewById(R.id.newFolderConfirm);
+        String excePath = SQLiteDBKeyManager.GetInstance(context).GetValueByKey(ContantsDefine.EXCEL_FOLDER_PATH);
+        newFolder.setText(excePath);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void ReadDataFromExcelFile(Activity context){
         String excelFilePath = SQLiteDBKeyManager.GetInstance(context).GetValueByKey(ContantsDefine.EXCEL_FOLDER_PATH);
-        ArrayList<QuestionAnswerObject> datasFromExcelFile = ReadExcelFile.ReadExcelFile(context, excelFilePath);
+        ArrayList<DBDataAIObject> datasFromExcelFile = ReadExcelFile.ReadExcelFile(context, excelFilePath);
+        SQLiteDBDataAIManager.GetInstance(context).addKeys(datasFromExcelFile);
     }
 }

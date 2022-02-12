@@ -2,31 +2,21 @@ package com.example.assistant.FileManager;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.view.Gravity;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.provider.Settings;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.assistant.ContantsDefine;
-import com.example.assistant.R;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,38 +42,69 @@ public class Functions {
                 listPermissionsNeeded.add(p);
             }
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+            } else {
+                //request for the permission
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                Uri uri = Uri.fromParts("package", mContext.getPackageName(), null);
+                intent.setData(uri);
+                mContext.startActivityForResult(intent, ContantsDefine.REQUEST_GET_EXCEL_FILE_PATH);
+            }
+        }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(mContext, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), Functions.WRITE_EXTENAL_STORAGE);
             return false;
         }
         return true;
     }
+    public static boolean RequestReadFilePermission(Activity mContext){
+
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        //for (String p : permissions) {
+            result = ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                requestPermission(mContext);
+                return false;
+            }
+        //}
+        return true;
+    }
     public static void requestPermission(Activity context){
         if(ActivityCompat.shouldShowRequestPermissionRationale(
-                context, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                context, Manifest.permission.READ_EXTERNAL_STORAGE)){
             Toast.makeText(context, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
         }else{
             ActivityCompat.requestPermissions(context, permissions, Functions.WRITE_EXTENAL_STORAGE);
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public static void ScanFolder(Activity context) {
 
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        // it would be "*/*".
+//        //intent.setType("image/*");
+//        intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+//        context.startActivityForResult(intent, ContantsDefine.REQUEST_GET_EXCEL_FILE_PATH);
 
-        // Filter to only show results that can be "opened", such as a
-        // file (as opposed to a list of contacts or timezones)
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 
-        // Filter to show only images, using the image MIME data type.
-        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
-        // To search for all documents available via installed storage providers,
-        // it would be "*/*".
-        //intent.setType("image/*");
-        intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-        //intent.setType("gagt/sdf");
-        context.startActivityForResult(intent, ContantsDefine.REQUEST_GET_NEW_SNAPSHORT_FOLDER);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                // it would be "*/*".
+                intent.setType("text/*");
+                //intent.setType("text/csv");
+                context.startActivityForResult(intent, ContantsDefine.REQUEST_GET_EXCEL_FILE_PATH);
+            } else {
+                checkPermission(context);
+            }
+        //}
     }
 
     public static String GetDefaultSnapshotFolderPath(Activity mContext){

@@ -1,6 +1,8 @@
 package com.example.assistant;
+import android.content.Context;
 import android.os.Build;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.io.File;
@@ -27,53 +29,49 @@ public class ChatBot
    // private static TextSpeech textSpeech;
     public static Boolean readyToLearnSomethingNew = false;
     public static String question = "";
+    public Context context= null;
 
-    //COsntants
-    private static final String BOT_INTRO="Hi! I am your Assistant. How can I help you?";
-    private static final String SORRY_RESPONSE = "Sorry! I did't get you.";
-    private static final String SYSTEM_ERROR ="Sorry! there is an error in my system.";
-    private static final String LEARN_REQUEST ="WHat should be my answer to this statement?";
-    private static final String EXIT ="BYE! Have a nice day.";
-    public static final String DATABASE_NAME ="KnowledgeBase";
-    public static String DATABASE ="KnowledgeBase";
-    private static final String BOT_NAME="Bot : ";
+//    public ChatBot() {
+//
+//    }
 
     public static String getBotIntro() {
-        return BOT_INTRO;
+        return ContantsDefine.BOT_INTRO;
     }
 
     public static String getSorryResponse() {
-        return SORRY_RESPONSE;
+        return ContantsDefine.SORRY_RESPONSE;
     }
 
     public static String getSystemError() {
-        return SYSTEM_ERROR;
+        return ContantsDefine.SYSTEM_ERROR;
     }
 
     public static String getLearnRequest() {
-        return LEARN_REQUEST;
+        return ContantsDefine.LEARN_REQUEST;
     }
 
     public static String getEXIT() {
-        return EXIT;
+        return ContantsDefine.EXIT;
     }
 
     public static String getDATABASE() {
-        return DATABASE;
+        return ContantsDefine.DATABASE;
     }
 
     public static String getBotName() {
-        return BOT_NAME;
+        return ContantsDefine.BOT_NAME;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O_MR1)
-    public ChatBot() throws Exception
+    public ChatBot(@Nullable Context context) throws Exception
     {
-        this.quesResponseMap=KnowledgeBase.getKnowledgeBase(ChatBot.DATABASE);
+        this.context = context;
+        this.quesResponseMap=KnowledgeBase.getKnowledgeBase(this.context);
         System.out.println("========="+this.quesResponseMap);
         this.localQuesResponseMap = new TreeMap<String,String>();
         if(this.quesResponseMap == null)
-            this.botAnswer=ChatBot.SORRY_RESPONSE ;
+            this.botAnswer=ContantsDefine.SORRY_RESPONSE ;
         else
         {
             questions = quesResponseMap.keySet();
@@ -114,13 +112,13 @@ public class ChatBot
                 if(this.botAnswer.trim().toLowerCase().contains("timedate")) {this.botAnswer = new Date().toString();}
             }
             else {
-                this.botAnswer = ChatBot.SORRY_RESPONSE + " " + ChatBot.LEARN_REQUEST;
+                this.botAnswer = ContantsDefine.SORRY_RESPONSE + " " + ContantsDefine.LEARN_REQUEST;
                 readyToLearnSomethingNew = true;
                 ChatBot.question = question;
             }
         }catch(Exception e)
         {
-            this.botAnswer=ChatBot.SYSTEM_ERROR;
+            this.botAnswer=ContantsDefine.SYSTEM_ERROR;
         }
         return this.botAnswer;
     }
@@ -131,10 +129,10 @@ public class ChatBot
     {
         if(exitStmt.toLowerCase().contains("exit"))
         {
-            this.chatHistory += ChatBot.BOT_NAME+ChatBot.EXIT;
-            log(ChatBot.BOT_NAME+ChatBot.EXIT );
-            speak(ChatBot.EXIT);
-            KnowledgeBase.saveNewKnowledge(this.localQuesResponseMap,ChatBot.DATABASE);
+            this.chatHistory += ContantsDefine.BOT_NAME+ContantsDefine.EXIT;
+            log(ContantsDefine.BOT_NAME+ContantsDefine.EXIT );
+            speak(ContantsDefine.EXIT);
+            KnowledgeBase.saveNewKnowledge(this.localQuesResponseMap, this.context);
             KnowledgeBase.saveLogs(this.chatHistory,this.username);
          //   this.textSpeech.stop();
 
@@ -144,12 +142,12 @@ public class ChatBot
     @RequiresApi(api = Build.VERSION_CODES.O_MR1)
     public static void main(String arg[]) throws Exception{
         Scanner sc= new Scanner(System.in);
-        ChatBot cb= new ChatBot();
-        log(ChatBot.BOT_INTRO);
-        speak(ChatBot.BOT_INTRO);
+        ChatBot cb= new ChatBot(null);
+        log(ContantsDefine.BOT_INTRO);
+        speak(ContantsDefine.BOT_INTRO);
         cb.username=sc.nextLine();
-        cb.chatHistory += "\n\n"+ChatBot.BOT_NAME+"Hi "+cb.username+". How can I help you?\r\n";
-        log("\n\n"+ChatBot.BOT_NAME+"Hi "+cb.username+". How can I help you?");
+        cb.chatHistory += "\n\n"+ContantsDefine.BOT_NAME+"Hi "+cb.username+". How can I help you?\r\n";
+        log("\n\n"+ContantsDefine.BOT_NAME+"Hi "+cb.username+". How can I help you?");
         speak("Hi "+cb.username+". How can I help you?");
         while(true)
         {
@@ -158,8 +156,8 @@ public class ChatBot
             cb.chatHistory += cb.username+" : "+question+"\r\n";
             cb.checkExit(question.trim());
             String response = cb.getResponse(question);
-            cb.chatHistory += ChatBot.BOT_NAME+response+"\r\n";
-            log(ChatBot.BOT_NAME+response);
+            cb.chatHistory += ContantsDefine.BOT_NAME+response+"\r\n";
+            log(ContantsDefine.BOT_NAME+response);
             speak(response.trim());
             if(response.toLowerCase().contains("sorry"))
             {
@@ -167,9 +165,9 @@ public class ChatBot
                 response = sc.nextLine();
                 cb.chatHistory += cb.username+" : "+response;
                 cb.checkExit(response.trim());
-                cb.chatHistory += ChatBot.BOT_NAME+cb.saveQuestionAndResponse(question,response)+"\r\n";
+                cb.chatHistory += ContantsDefine.BOT_NAME+cb.saveQuestionAndResponse(question,response)+"\r\n";
                 String res = cb.saveQuestionAndResponse(question,response);
-                log(ChatBot.BOT_NAME+res);
+                log(ContantsDefine.BOT_NAME+res);
                 speak(res);
             }
 

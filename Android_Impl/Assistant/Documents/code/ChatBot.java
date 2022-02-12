@@ -20,13 +20,6 @@ public class ChatBot
 	private static TextSpeech textSpeech;
 	
 	//COsntants
-	private static final String BOT_INTRO="Hi! I am ChatBot 1.0 \nEnter your name ...\n";
-	private static final String SORRY_RESPONSE = "Sorry! I did't get you.";
-	private static final String SYSTEM_ERROR ="Sorry! there is an error in my system.";
-	private static final String LEARN_REQUEST ="WHat should be my answer to this statement?";
-	private static final String EXIT ="BYE! Have a nice day.";
-	private static final String DATABASE ="KnowledgeBase.txt";
-	private static final String BOT_NAME="Bot : ";
 
 	private ChatBot() throws Exception
 	{
@@ -75,9 +68,10 @@ public class ChatBot
 			}				
 			else
 				this.botAnswer=ChatBot.SORRY_RESPONSE+" "+ChatBot.LEARN_REQUEST;
-		}catch(Exception e)
+		}
+		catch(Exception e)
 		{
-			this.botAnswer=ChatBot.SYSTEM_ERROR;
+			this.botAnswer=ContantsDefine.SYSTEM_ERROR;
 		}
 		return this.botAnswer;
 	}
