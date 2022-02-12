@@ -42,7 +42,7 @@ public class ChatBot
 			this.quesResponseMap.put(question,response);
 			this.localQuesResponseMap.put(question,response);
 		}
-		this.botAnswer="Okey. Got it!";
+		this.botAnswer=Vâng. Chúng ta bắt đầu lại nhé!";
 		return this.botAnswer;
 	}	
 

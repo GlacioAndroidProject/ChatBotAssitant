@@ -1,4 +1,4 @@
-package com.example.assistant.FileManager;
+package com.example.assistant.DBManager.Manager;
 
 import static com.example.assistant.ContantsDefine.bBDatAIId;
 import static com.example.assistant.ContantsDefine.bBDatAIKey;
@@ -16,38 +16,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.assistant.DBManager.Objects.DBDataAIObject;
+
 import java.util.ArrayList;
 import java.util.TreeMap;
-
-class SQLiteDBAIDataHelper extends SQLiteOpenHelper {
-
-    private final int DB_Version = 1;
-    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + bBDatAITableName + "("
-            + bBDatAIId + " INTEGER PRIMARY KEY AUTOINCREMENT, " + bBDatAIKey  + " TEXT, "
-            + bBDatAIValue + " TEXT)";
-    public SQLiteDBAIDataHelper(@Nullable Context context, @Nullable String dBName, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, dBName, factory, version);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS DBKeyManager");
-        onCreate(db);
-    }
-
-}
 
 public class SQLiteDBDataAIManager {
 
     private static SQLiteDBDataAIManager single_instance = null;
     private Context context;
     private SQLiteDatabase database;
-    private SQLiteDBAIDataHelper dbHelper;
+    private SQLiteDBHelper dbHelper;
 
     public static SQLiteDBDataAIManager GetInstance(Context c) {
         if (single_instance == null)
@@ -58,12 +37,12 @@ public class SQLiteDBDataAIManager {
         this.context = c;
     }
     public SQLiteDBDataAIManager openForWirteDB() throws SQLException {
-        this.dbHelper = new SQLiteDBAIDataHelper(this.context, chatBotDB, null, 1);
+        this.dbHelper = new SQLiteDBHelper(this.context, chatBotDB, null, 1);
         this.database = this.dbHelper.getWritableDatabase();
         return this;
     }
     public SQLiteDBDataAIManager openForReadDB() throws SQLException {
-        this.dbHelper = new SQLiteDBAIDataHelper(this.context, chatBotDB, null, 1);
+        this.dbHelper = new SQLiteDBHelper(this.context, chatBotDB, null, 1);
         this.database = this.dbHelper.getReadableDatabase();
         return this;
     }
@@ -73,15 +52,11 @@ public class SQLiteDBDataAIManager {
     public void delete(long _id) {
         openForWirteDB();
         this.database.delete(bBDatAITableName, bBDatAIId+"=" + _id, null);
+        close();
     }
 
     public void addKey(DBDataAIObject dBDataAIObject){
-//        String rowExits = GetValueByKey(dBDataAIObject.getQuestion());
-//        if(!rowExits.isEmpty())
-//        {
-//            updateKey(dBDataAIObject);
-//            return;
-//        }
+
         openForWirteDB();
         ContentValues cv=new ContentValues();
         cv.put(bBDatAIKey,dBDataAIObject.getQuestion());
@@ -213,7 +188,6 @@ public class SQLiteDBDataAIManager {
 
     public void updateKey(DBDataAIObject dBDataAIObject){
         openForWirteDB();
-
         // New value for one column
         ContentValues values=new ContentValues();
         //cv.put(bBKeyId,dbKeyObject.getId());
@@ -234,13 +208,12 @@ public class SQLiteDBDataAIManager {
 
     public void addKeys(ArrayList<DBDataAIObject> dBDataAIObjects){
         openForWirteDB();
-        ContentValues cv=new ContentValues();
         for (DBDataAIObject dBDataAIObject: dBDataAIObjects)
-        {
+        {   ContentValues cv=new ContentValues();
             cv.put(bBDatAIKey,dBDataAIObject.getQuestion());
             cv.put(bBDatAIValue,dBDataAIObject.getAnswer());
+            this.database.replace(bBDatAITableName, null, cv);
         }
-        this.database.replace(bBDatAITableName, null, cv);
         close();
     }
 

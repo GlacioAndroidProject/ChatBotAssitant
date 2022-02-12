@@ -1,4 +1,4 @@
-package com.example.assistant.FileManager;
+package com.example.assistant.DBManager.Manager;
 
 import static com.example.assistant.ContantsDefine.bBKeyId;
 import static com.example.assistant.ContantsDefine.bBKeyKey;
@@ -16,39 +16,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.assistant.DBManager.Objects.DBKeyObject;
+
 import java.util.ArrayList;
-
-
-class SQLiteDBKeyHelper extends SQLiteOpenHelper {
-
-    private final int DB_Version = 1;
-    //private static final String CREATE_TABLE = "Create Table If Not Exists " + bBKeyTableName + " (" + bBKeyId + " Text PRIMARY KEY, " + bBKeyKey + " Text, " + bBKeyValue + " Text);";
-    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + bBKeyTableName + "("
-            + bBKeyId + " INTEGER PRIMARY KEY AUTOINCREMENT, " + bBKeyKey  + " TEXT, "
-            + bBKeyValue + " TEXT)";
-    public SQLiteDBKeyHelper(@Nullable Context context, @Nullable String dBName, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, dBName, factory, version);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS DBKeyManager");
-        onCreate(db);
-    }
-
-}
 
 public class SQLiteDBKeyManager {
 
     private static SQLiteDBKeyManager single_instance = null;
     private Context context;
     private SQLiteDatabase database;
-    private SQLiteDBKeyHelper dbHelper;
+    private SQLiteDBHelper dbHelper;
 
     public static SQLiteDBKeyManager GetInstance(Context c) {
         if (single_instance == null)
@@ -59,12 +36,12 @@ public class SQLiteDBKeyManager {
         this.context = c;
     }
     public SQLiteDBKeyManager openForWirteDB() throws SQLException {
-        this.dbHelper = new SQLiteDBKeyHelper(this.context, chatBotDB, null, 1);
+        this.dbHelper = new SQLiteDBHelper(this.context, chatBotDB, null, 1);
         this.database = this.dbHelper.getWritableDatabase();
         return this;
     }
     public SQLiteDBKeyManager openForReadDB() throws SQLException {
-        this.dbHelper = new SQLiteDBKeyHelper(this.context, chatBotDB, null, 1);
+        this.dbHelper = new SQLiteDBHelper(this.context, chatBotDB, null, 1);
         this.database = this.dbHelper.getReadableDatabase();
         return this;
     }
@@ -148,13 +125,13 @@ public class SQLiteDBKeyManager {
 
     public void addKeys(ArrayList<DBKeyObject> dbKeyObjects){
         openForWirteDB();
-        ContentValues cv=new ContentValues();
         for (DBKeyObject dbKeyObject: dbKeyObjects)
         {
+            ContentValues cv=new ContentValues();
             cv.put(bBKeyKey,dbKeyObject.getKey());
             cv.put(bBKeyValue,dbKeyObject.getValue());
+            this.database.replace(bBKeyTableName, null, cv);
         }
-        this.database.replace(bBKeyTableName, null, cv);
         close();
     }
 

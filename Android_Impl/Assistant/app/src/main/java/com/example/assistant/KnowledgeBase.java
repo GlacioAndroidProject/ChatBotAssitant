@@ -1,25 +1,12 @@
 package com.example.assistant;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
-import android.database.sqlite.SQLiteCursorDriver;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQuery;
-import android.os.Build;
-import android.os.Environment;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
-import com.example.assistant.FileManager.DBDataAIObject;
-import com.example.assistant.FileManager.SQLiteDBDataAIManager;
+import com.example.assistant.DBManager.Objects.DBDataAIObject;
+import com.example.assistant.DBManager.Manager.SQLiteDBDataAIManager;
 
-import java.nio.file.Path;
 import java.util.*;
-import java.io.*;
-import java.text.*;
 
 public class KnowledgeBase
 {
@@ -33,7 +20,6 @@ public class KnowledgeBase
         SQLiteDBDataAIManager.GetInstance(context).addKeys(dbDataAIObjectsInitial);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O_MR1)
     public static TreeMap<String,String> getKnowledgeBase(@Nullable Context context) throws Exception {
         createData(context);
         quesResponseMap = SQLiteDBDataAIManager.GetInstance(context).GetAllValueAsTreeMap();
@@ -55,7 +41,6 @@ public class KnowledgeBase
         return quesResponseMap;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O_MR1)
     public static void saveNewKnowledge(TreeMap<String,String> newKnowledge,@Nullable Context context) throws Exception
     {
         for(String key:  newKnowledge.keySet()){

@@ -1,4 +1,4 @@
-package com.example.assistant.FileManager;
+package com.example.assistant.DBManager.Objects;
 
 public class QuestionAnswerObject {
     String question = "";

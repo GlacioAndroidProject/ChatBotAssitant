@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,13 +22,12 @@ import android.widget.ImageView;
 
 import com.alan.alansdk.AlanConfig;
 import com.alan.alansdk.button.AlanButton;
-import com.example.assistant.FileManager.DBDataAIObject;
-import com.example.assistant.FileManager.DBKeyObject;
+import com.example.assistant.DBManager.Objects.DBDataAIObject;
+import com.example.assistant.DBManager.Objects.DBKeyObject;
 import com.example.assistant.FileManager.Functions;
-import com.example.assistant.FileManager.QuestionAnswerObject;
 import com.example.assistant.FileManager.ReadExcelFile;
-import com.example.assistant.FileManager.SQLiteDBDataAIManager;
-import com.example.assistant.FileManager.SQLiteDBKeyManager;
+import com.example.assistant.DBManager.Manager.SQLiteDBDataAIManager;
+import com.example.assistant.DBManager.Manager.SQLiteDBKeyManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -192,5 +190,6 @@ public class MainActivity extends AppCompatActivity {
         String excelFilePath = SQLiteDBKeyManager.GetInstance(context).GetValueByKey(ContantsDefine.EXCEL_FOLDER_PATH);
         ArrayList<DBDataAIObject> datasFromExcelFile = ReadExcelFile.ReadExcelFile(context, excelFilePath);
         SQLiteDBDataAIManager.GetInstance(context).addKeys(datasFromExcelFile);
+        chatBot.setQuesResponseMap(SQLiteDBDataAIManager.GetInstance(context).GetAllValueAsTreeMap());
     }
 }

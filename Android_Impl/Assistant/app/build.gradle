@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.glacio.doctor_assistant"
-        minSdkVersion 21
+        minSdkVersion 22
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -34,7 +34,7 @@ dependencies {
     implementation 'app.alan:sdk:4.15.0'
     //implementation 'net.sourceforge.jexcelapi:jxl:2.6.12'
 // https://mvnrepository.com/artifact/org.apache.poi/poi
-    implementation 'org.apache.poi:poi:5.2.0'
-// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
-    implementation 'org.apache.poi:poi-ooxml:5.2.0'
+//    implementation 'org.apache.poi:poi:5.2.0'
+//// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+//    implementation 'org.apache.poi:poi-ooxml:5.2.0'
 }

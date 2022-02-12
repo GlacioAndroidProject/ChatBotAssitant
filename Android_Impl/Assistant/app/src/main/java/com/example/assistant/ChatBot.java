@@ -81,13 +81,23 @@ public class ChatBot
         this.textSpeech.start();*/
     }
 
+    public TreeMap<String, String> getQuesResponseMap() {
+        return quesResponseMap;
+    }
+
+    public void setQuesResponseMap(TreeMap<String, String> quesResponseMap) {
+        this.quesResponseMap = quesResponseMap;
+        questions = quesResponseMap.keySet();
+        answers = quesResponseMap.values();
+    }
+
     public String saveQuestionAndResponse(String question , String response)
     {
         if(!question.trim().isEmpty() && !response.trim().isEmpty()) {
             this.quesResponseMap.put(question,response);
             this.localQuesResponseMap.put(question,response);
         }
-        this.botAnswer="Okey. Got it!";
+        this.botAnswer="Vâng. Chúng ta bắt đầu lại nhé!";
         return this.botAnswer;
     }
 
@@ -134,8 +144,6 @@ public class ChatBot
             speak(ContantsDefine.EXIT);
             KnowledgeBase.saveNewKnowledge(this.localQuesResponseMap, this.context);
             KnowledgeBase.saveLogs(this.chatHistory,this.username);
-         //   this.textSpeech.stop();
-
         }
     }
 
