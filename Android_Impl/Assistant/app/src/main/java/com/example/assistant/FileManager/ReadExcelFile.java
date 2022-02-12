@@ -24,7 +24,7 @@ public class ReadExcelFile {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
             String csvLine;
             while ((csvLine = reader.readLine()) != null) {
-                String[] row = csvLine.split("_____");
+                String[] row = csvLine.split("_____,");
 
                 String question = "";
                 String answer = "";
