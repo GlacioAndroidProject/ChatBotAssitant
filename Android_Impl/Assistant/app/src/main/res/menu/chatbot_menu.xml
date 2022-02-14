@@ -5,6 +5,9 @@
         android:title="@string/import_file"
         android:icon="@drawable/import_icon"
         />
+    <item android:id="@+id/deleteDataBase"
+        android:icon="@drawable/ic_close_drawable"
+        android:title="@string/deleteDB" />
     <item android:id="@+id/help"
         android:icon="@drawable/help_icon"
         android:title="@string/help" />
