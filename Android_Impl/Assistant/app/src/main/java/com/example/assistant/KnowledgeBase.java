@@ -23,21 +23,6 @@ public class KnowledgeBase
     public static TreeMap<String,String> getKnowledgeBase(@Nullable Context context) throws Exception {
         createData(context);
         quesResponseMap = SQLiteDBDataAIManager.GetInstance(context).GetAllValueAsTreeMap();
-//        Cursor resultSet = null;
-//        try{
-//        resultSet = mydatabase.rawQuery("Select * from " + ChatBot.DATABASE_NAME, null);
-//        }catch(Exception e){
-//            System.out.println("================= No Table found =======");
-//            createData(mydatabase);
-//            resultSet = mydatabase.rawQuery("Select * from " + ChatBot.DATABASE_NAME, null);
-//        }
-//        System.out.println(" resultSet : "+resultSet);
-//        while(resultSet.moveToNext() != resultSet.isLast()){
-//            quesResponseMap.put(resultSet.getString(0),resultSet.getString(1));
-//        }
-//        quesResponseMap.put(resultSet.getString(0),resultSet.getString(1));
-//        System.out.println(quesResponseMap);
-//        resultSet.close();
         return quesResponseMap;
     }
 
@@ -46,10 +31,6 @@ public class KnowledgeBase
         for(String key:  newKnowledge.keySet()){
             DBDataAIObject dbDataAIObject = new DBDataAIObject("0", key, newKnowledge.get(key));
             SQLiteDBDataAIManager.GetInstance(context).addKey(dbDataAIObject);
-//            ContentValues values = new ContentValues();
-//            values.put("Question",key);
-//            values.put("Answer",newKnowledge.get(key));
-//            mydatabase.insert(ChatBot.DATABASE_NAME,null,values);
         }
         System.out.println("============ saved ");
     }

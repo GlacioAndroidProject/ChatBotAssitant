@@ -46,18 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         chatView = (ChatView) findViewById(R.id.chat_view);
-        //Context ctx = this;// for Activity, or Service. Otherwise simply get the context.
-        //String dbname = ContantsDefine.DATABASE_NAME;
-        //dbpath = ctx.getDatabasePath(dbname);
-        //ChatBot.DATABASE = dbpath.getAbsolutePath();
         init();
-        ImageView imageButton;
-//        AlanButton alanButton = (AlanButton)findViewById(R.id.alan_button);
-//
-//        AlanConfig alanConfig = AlanConfig.builder()
-//                .setProjectId("314203787ccd9370974f1bf6b6929c1b2e956eca572e1d8b807a3e2338fdd0dc/prod")
-//                .build();
-//        alanButton.initWithConfig(alanConfig);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

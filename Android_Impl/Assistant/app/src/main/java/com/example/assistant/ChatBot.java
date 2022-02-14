@@ -21,19 +21,26 @@ public class ChatBot
     private TreeMap<String,String> localQuesResponseMap=null;
     private Set<String> questions=null;
     private Collection<String> answers=null;
+    private ArrayList<MessageObject> messageObjects = null;
+    private int chatID = 0;
+    private int messageIDCount = 0;
     private String botAnswer="";
     private String chatHistory="";
     private String username="";
 
     //static variables
-   // private static TextSpeech textSpeech;
     public static Boolean readyToLearnSomethingNew = false;
     public static String question = "";
     public Context context= null;
 
-//    public ChatBot() {
-//
-//    }
+    public int getChatID() {
+        return chatID;
+    }
+
+    public void setChatID(int chatID) {
+        this.chatID = chatID;
+    }
+
 
     public static String getBotIntro() {
         return ContantsDefine.BOT_INTRO;
@@ -67,7 +74,9 @@ public class ChatBot
     public ChatBot(@Nullable Context context) throws Exception
     {
         this.context = context;
+        this.messageObjects = new ArrayList<>();
         this.quesResponseMap=KnowledgeBase.getKnowledgeBase(this.context);
+
         System.out.println("========="+this.quesResponseMap);
         this.localQuesResponseMap = new TreeMap<String,String>();
         if(this.quesResponseMap == null)
@@ -77,8 +86,6 @@ public class ChatBot
             questions = quesResponseMap.keySet();
             answers = quesResponseMap.values();
         }
-       /* this.textSpeech = TextSpeech.getInstance();
-        this.textSpeech.start();*/
     }
 
     public TreeMap<String, String> getQuesResponseMap() {
@@ -149,32 +156,32 @@ public class ChatBot
 
     @RequiresApi(api = Build.VERSION_CODES.O_MR1)
     public static void main(String arg[]) throws Exception{
-        Scanner sc= new Scanner(System.in);
-        ChatBot cb= new ChatBot(null);
+        Scanner scanner= new Scanner(System.in);
+        ChatBot chatBot= new ChatBot(null);
         log(ContantsDefine.BOT_INTRO);
         speak(ContantsDefine.BOT_INTRO);
-        cb.username=sc.nextLine();
-        cb.chatHistory += "\n\n"+ContantsDefine.BOT_NAME+"Hi "+cb.username+". How can I help you?\r\n";
-        log("\n\n"+ContantsDefine.BOT_NAME+"Hi "+cb.username+". How can I help you?");
-        speak("Hi "+cb.username+". How can I help you?");
+        chatBot.username=scanner.nextLine();
+        chatBot.chatHistory += "\n\n"+ContantsDefine.BOT_NAME+"Hi "+chatBot.username+". How can I help you?\r\n";
+        log("\n\n"+ContantsDefine.BOT_NAME+"Hi "+chatBot.username+". How can I help you?");
+        speak("Hi "+chatBot.username+". How can I help you?");
         while(true)
         {
-            System.out.print(cb.username+" : ");
-            String question = sc.nextLine();
-            cb.chatHistory += cb.username+" : "+question+"\r\n";
-            cb.checkExit(question.trim());
-            String response = cb.getResponse(question);
-            cb.chatHistory += ContantsDefine.BOT_NAME+response+"\r\n";
+            System.out.print(chatBot.username+" : ");
+            String question = scanner.nextLine();
+            chatBot.chatHistory += chatBot.username+" : "+question+"\r\n";
+            chatBot.checkExit(question.trim());
+            String response = chatBot.getResponse(question);
+            chatBot.chatHistory += ContantsDefine.BOT_NAME+response+"\r\n";
             log(ContantsDefine.BOT_NAME+response);
             speak(response.trim());
             if(response.toLowerCase().contains("sorry"))
             {
-                log(cb.username+" : ");
-                response = sc.nextLine();
-                cb.chatHistory += cb.username+" : "+response;
-                cb.checkExit(response.trim());
-                cb.chatHistory += ContantsDefine.BOT_NAME+cb.saveQuestionAndResponse(question,response)+"\r\n";
-                String res = cb.saveQuestionAndResponse(question,response);
+                log(chatBot.username+" : ");
+                response = scanner.nextLine();
+                chatBot.chatHistory += chatBot.username+" : "+response;
+                chatBot.checkExit(response.trim());
+                chatBot.chatHistory += ContantsDefine.BOT_NAME+chatBot.saveQuestionAndResponse(question,response)+"\r\n";
+                String res = chatBot.saveQuestionAndResponse(question,response);
                 log(ContantsDefine.BOT_NAME+res);
                 speak(res);
             }
